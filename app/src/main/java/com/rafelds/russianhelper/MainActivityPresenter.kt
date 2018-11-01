@@ -1,12 +1,10 @@
 package com.rafelds.russianhelper
 
-import io.realm.Realm
-import io.realm.kotlin.where
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class MainActivityPresenter @Inject constructor(val realm: Realm) {
+class MainActivityPresenter @Inject constructor(private val russianWordService: RussianWordService) {
 
     private lateinit var view: MainActivityView
 
@@ -15,14 +13,7 @@ class MainActivityPresenter @Inject constructor(val realm: Realm) {
     }
 
     fun onCreate() {
-        val realm = Realm.getDefaultInstance()
-        try {
-            view.updateWordList(fetchAllWords(realm))
-        } catch (e: Exception) {
-
-        } finally {
-            realm.close()
-        }
+        view.updateWordList(russianWordService.getAllWords())
     }
 
     fun onAddButtonClick() {
@@ -30,26 +21,9 @@ class MainActivityPresenter @Inject constructor(val realm: Realm) {
     }
 
     fun onSaveButtonClick(russianWord: RussianWord) {
-        val realm = Realm.getDefaultInstance()
-        try {
-            realm.beginTransaction()
-            val realmObject = realm.createObject(RussianWordDB::class.java)
-            realmObject.word = russianWord.russianWord
-            realmObject.description = russianWord.description
-            realm.commitTransaction()
-
-            view.updateWordList(fetchAllWords(realm))
-        } catch (e: Exception) {
-            println(e)
-        } finally {
-            realm.close()
-        }
+        russianWordService.addWord(russianWord)
+        view.updateWordList(russianWordService.getAllWords())
         view.showSuccessSnackbar()
     }
 
-    private fun fetchAllWords(realm: Realm): List<RussianWord> {
-        return realm.where<RussianWordDB>().findAll().map {
-            RussianWord(it.word!!, it.description!!)
-        }.toList()
-    }
 }
