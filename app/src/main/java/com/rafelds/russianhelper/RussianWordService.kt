@@ -1,6 +1,7 @@
 package com.rafelds.russianhelper
 
 import io.realm.Realm
+import java.util.*
 import javax.inject.Inject
 
 class RussianWordService @Inject constructor() {
@@ -8,7 +9,7 @@ class RussianWordService @Inject constructor() {
     fun addWord(russianWord: RussianWord) {
         val realm = Realm.getDefaultInstance()
         realm.beginTransaction()
-        val realmObject = realm.createObject(RussianWordDB::class.java)
+        val realmObject = realm.createObject(RussianWordDB::class.java, UUID.randomUUID().toString())
         realmObject.word = russianWord.russianWord
         realmObject.description = russianWord.description
         realm.commitTransaction()
