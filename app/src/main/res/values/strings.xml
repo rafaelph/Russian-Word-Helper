@@ -1,4 +1,11 @@
 <resources>
-    <string name="app_name">Russian Helper</string>
+    <string name="app_name">Russian Words Helper</string>
     <string name="action_settings">Settings</string>
+
+    <string name="enter_word_or_phrase_hint">Word or phrase</string>
+    <string name="description_hint">Description</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_new_word_title">New Word</string>
+    <string name="word_save_successful">Word saved</string>
 </resources>
