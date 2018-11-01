@@ -6,6 +6,8 @@ import android.view.ViewGroup
 
 class WordAdapter : RecyclerView.Adapter<WordViewHolder>() {
 
+    var longClickListener: (id: String) -> Boolean = {false}
+
     var words: List<RussianWord> = listOf()
         set(value) {
             field = value
@@ -21,5 +23,6 @@ class WordAdapter : RecyclerView.Adapter<WordViewHolder>() {
 
     override fun onBindViewHolder(viewHolder: WordViewHolder, index: Int) {
         viewHolder.setViewDetails(words[index])
+        viewHolder.setLongClickListener(longClickListener)
     }
 }

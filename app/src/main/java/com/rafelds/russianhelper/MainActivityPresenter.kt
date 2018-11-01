@@ -12,18 +12,21 @@ class MainActivityPresenter @Inject constructor(private val russianWordService: 
         this.view = view
     }
 
-    fun onCreate() {
+    fun onCreate() = view.updateWordList(russianWordService.getAllWords())
+
+    fun onAddButtonClick() = view.showAddWordDialog()
+
+    fun onSaveButtonClick(word: String, description: String) {
+        russianWordService.addWord(word, description)
         view.updateWordList(russianWordService.getAllWords())
+        view.showWordAddedSnackbar()
     }
 
-    fun onAddButtonClick() {
-        view.showAddWordDialog()
-    }
-
-    fun onSaveButtonClick(russianWord: RussianWord) {
-        russianWordService.addWord(russianWord)
+    fun onItemLongClick(id: String): Boolean {
+        russianWordService.deleteWord(id)
         view.updateWordList(russianWordService.getAllWords())
-        view.showSuccessSnackbar()
+        view.showWordDeletedSnackbar()
+        return true
     }
 
 }

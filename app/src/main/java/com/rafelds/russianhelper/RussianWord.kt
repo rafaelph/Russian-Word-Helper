@@ -1,3 +1,3 @@
 package com.rafelds.russianhelper
 
-data class RussianWord(val russianWord: String, val description: String)
+data class RussianWord(val id: String, val russianWord: String, val description: String)

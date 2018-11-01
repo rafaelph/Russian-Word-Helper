@@ -7,5 +7,6 @@
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="add_new_word_title">New Word</string>
-    <string name="word_save_successful">Word saved</string>
+    <string name="word_save_successful">Saved</string>
+    <string name="word_delete_successful">Deleted</string>
 </resources>

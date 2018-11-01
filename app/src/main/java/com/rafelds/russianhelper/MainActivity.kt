@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity(), MainActivityView {
         setSupportActionBar(activity_main_toolbar)
 
         wordAdapter = WordAdapter()
+        wordAdapter.longClickListener = presenter::onItemLongClick
 
         activity_main_recycler_view.apply {
             layoutManager = LinearLayoutManager(context)
@@ -54,7 +55,7 @@ class MainActivity : AppCompatActivity(), MainActivityView {
                 val mainWord = inflatedDialogView.findViewById<TextInputEditText>(R.id.dialog_main_word).text.toString()
                 val description =
                     inflatedDialogView.findViewById<TextInputEditText>(R.id.dialog_description).text.toString()
-                presenter.onSaveButtonClick(RussianWord(mainWord, description))
+                presenter.onSaveButtonClick(mainWord, description)
             }
             setButton(BUTTON_NEGATIVE, getString(R.string.cancel)) { _, _ -> }
             setTitle(getString(R.string.add_new_word_title))
@@ -68,10 +69,14 @@ class MainActivity : AppCompatActivity(), MainActivityView {
         wordAdapter.words = results
     }
 
-    override fun showSuccessSnackbar() {
+    override fun showWordAddedSnackbar() = displaySnackbar(getString(R.string.word_save_successful))
+
+    override fun showWordDeletedSnackbar() = displaySnackbar(getString(R.string.word_delete_successful))
+
+    private fun displaySnackbar(text: String) {
         val snackBar = Snackbar.make(
             findViewById(R.id.activity_main_fab),
-            getString(R.string.word_save_successful),
+            text,
             Snackbar.LENGTH_SHORT
         )
         snackBar.view.setBackgroundColor(ContextCompat.getColor(this, R.color.colorDarkGreen))
