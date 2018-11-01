@@ -2,8 +2,17 @@ package com.rafelds.russianhelper
 
 import io.realm.Realm
 import io.realm.kotlin.where
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class MainActivityPresenter(val view: MainActivityView) {
+@Singleton
+class MainActivityPresenter @Inject constructor(val realm: Realm) {
+
+    private lateinit var view: MainActivityView
+
+    fun attachView(view: MainActivityView) {
+        this.view = view
+    }
 
     fun onCreate() {
         val realm = Realm.getDefaultInstance()

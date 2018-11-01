@@ -1,10 +1,15 @@
 package com.rafelds.russianhelper
 
 import android.app.Application
+import com.rafelds.russianhelper.di.AppComponent
+import com.rafelds.russianhelper.di.AppModule
+import com.rafelds.russianhelper.di.DaggerAppComponent
 import io.realm.Realm
 import io.realm.RealmConfiguration
 
 class RussianHelperApplication : Application() {
+
+    private lateinit var appComponent: AppComponent
 
     override fun onCreate() {
         super.onCreate()
@@ -14,5 +19,9 @@ class RussianHelperApplication : Application() {
             .schemaVersion(1L)
             .build()
         Realm.setDefaultConfiguration(config)
+
+        appComponent = DaggerAppComponent.builder().appModule(AppModule()).build()
     }
+
+    fun getComponent() = appComponent
 }

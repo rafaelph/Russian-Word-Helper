@@ -13,20 +13,24 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.WindowManager
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity(), MainActivityView {
 
-    private lateinit var presenter: MainActivityPresenter
+    @Inject
+    lateinit var presenter: MainActivityPresenter
+
     private lateinit var wordAdapter: WordAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as RussianHelperApplication).getComponent().inject(this)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(activity_main_toolbar)
 
         wordAdapter = WordAdapter()
-        presenter = MainActivityPresenter(this)
 
         activity_main_recycler_view.apply {
             layoutManager = LinearLayoutManager(context)
@@ -37,6 +41,7 @@ class MainActivity : AppCompatActivity(), MainActivityView {
 
         activity_main_fab.setOnClickListener { presenter.onAddButtonClick() }
 
+        presenter.attachView(this)
         presenter.onCreate()
     }
 
