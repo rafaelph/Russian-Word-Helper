@@ -1,5 +1,9 @@
 package com.rafelds.russianhelper
 
+import io.reactivex.SingleObserver
+import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers.io
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -12,21 +16,59 @@ class MainActivityPresenter @Inject constructor(private val russianWordService: 
         this.view = view
     }
 
-    fun onCreate() = view.updateWordList(russianWordService.getAllWords())
+    fun onCreate() {
+        russianWordService.getAllWords()
+            .observeOn(mainThread())
+            .subscribeOn(io())
+            .subscribe(getUpdateViewObserver())
+    }
 
     fun onAddButtonClick() = view.showAddWordDialog()
 
     fun onSaveButtonClick(word: String, description: String) {
         russianWordService.addWord(word, description)
-        view.updateWordList(russianWordService.getAllWords())
-        view.showWordAddedSnackbar()
+            .andThen(russianWordService.getAllWords())
+            .observeOn(mainThread())
+            .subscribeOn(io())
+            .subscribe(getUpdateViewOnSaveObserver())
     }
 
     fun onItemLongClick(id: String): Boolean {
         russianWordService.deleteWord(id)
-        view.updateWordList(russianWordService.getAllWords())
-        view.showWordDeletedSnackbar()
+            .andThen(russianWordService.getAllWords())
+            .observeOn(mainThread())
+            .subscribeOn(io())
+            .subscribe(getUpdateViewOnDeleteObserver())
         return true
+    }
+
+    private fun getUpdateViewObserver() = object : SingleObserver<List<RussianWord>> {
+        override fun onSuccess(results: List<RussianWord>) = view.updateWordList(results)
+        override fun onSubscribe(d: Disposable) = Unit
+        override fun onError(e: Throwable) = Unit
+
+    }
+
+    private fun getUpdateViewOnSaveObserver() = object : SingleObserver<List<RussianWord>> {
+        override fun onSuccess(results: List<RussianWord>) {
+            view.updateWordList(results)
+            view.showWordAddedSnackbar()
+        }
+
+        override fun onSubscribe(d: Disposable) = Unit
+        override fun onError(e: Throwable) = Unit
+
+    }
+
+    private fun getUpdateViewOnDeleteObserver() = object : SingleObserver<List<RussianWord>> {
+        override fun onSuccess(results: List<RussianWord>) {
+            view.updateWordList(results)
+            view.showWordDeletedSnackbar()
+        }
+
+        override fun onSubscribe(d: Disposable) = Unit
+        override fun onError(e: Throwable) = Unit
+
     }
 
 }
