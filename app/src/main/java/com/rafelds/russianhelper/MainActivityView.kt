@@ -7,4 +7,5 @@ interface MainActivityView {
     fun updateWordList(results: ArrayList<RussianWord>)
     fun insertWord(word: RussianWord)
     fun deleteWord(id: String)
+    fun openDetailsScreen(russianWord: RussianWord)
 }

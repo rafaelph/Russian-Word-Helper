@@ -33,11 +33,15 @@ class MainActivityPresenter @Inject constructor(private val russianWordService: 
             .subscribe(getUpdateViewOnSaveObserver())
     }
 
-    fun onItemLongClick(id: String): Boolean {
-        russianWordService.deleteWord(id)
+    fun onItemClick(russianWord: RussianWord) {
+        view.openDetailsScreen(russianWord)
+    }
+
+    fun onItemLongClick(russianWord: RussianWord): Boolean {
+        russianWordService.deleteWord(russianWord.id)
             .observeOn(mainThread())
             .subscribeOn(io())
-            .subscribe(getUpdateViewOnDeleteObserver(id))
+            .subscribe(getUpdateViewOnDeleteObserver(russianWord.id))
         return true
     }
 

@@ -9,12 +9,18 @@ class WordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun setViewDetails(russianWord: RussianWord) {
         itemView.russian_word.text = russianWord.russianWord
         itemView.description.text = russianWord.description
-        itemView.tag = russianWord.id
+        itemView.tag = russianWord
     }
 
-    fun setLongClickListener(clickListener: (id: String) -> Boolean) {
+    fun setLongClickListener(longClickListener: (russianWord: RussianWord) -> Boolean) {
         itemView.setOnLongClickListener {
-            clickListener.invoke(itemView.tag as String)
+            longClickListener.invoke(itemView.tag as RussianWord)
+        }
+    }
+
+    fun setClickListener(clickListener: (russianWord: RussianWord) -> Unit) {
+        itemView.setOnClickListener {
+            clickListener.invoke(itemView.tag as RussianWord)
         }
     }
 
