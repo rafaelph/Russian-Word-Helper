@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.WindowManager
 import android.view.animation.LinearInterpolator
 import com.rafelds.russianhelper.R
@@ -37,7 +38,6 @@ class MainActivity : AppCompatActivity(), MainActivityView {
         setSupportActionBar(activity_main_toolbar)
 
         wordAdapter = WordAdapter()
-        wordAdapter.longClickListener = presenter::onItemLongClick
         wordAdapter.clickListener = presenter::onItemClick
 
         activity_main_recycler_view.apply {
@@ -50,6 +50,13 @@ class MainActivity : AppCompatActivity(), MainActivityView {
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
             addOnScrollListener(hideFabOnScrollUpListener(activity_main_fab))
         }
+
+        val swipeTouchHelper = ItemTouchHelper(object : SwipeToDeleteCallback(this) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                presenter.onItemSwipe(viewHolder.itemView.tag as RussianWord)
+            }
+        })
+        swipeTouchHelper.attachToRecyclerView(activity_main_recycler_view)
 
         activity_main_fab.setOnClickListener { presenter.onAddButtonClick() }
 
@@ -98,7 +105,7 @@ class MainActivity : AppCompatActivity(), MainActivityView {
         val snackBar = Snackbar.make(
             findViewById(R.id.activity_main_fab),
             text,
-            Snackbar.LENGTH_SHORT
+            Snackbar.LENGTH_LONG
         )
         snackBar.view.setBackgroundColor(ContextCompat.getColor(this, R.color.colorDarkGreen))
         snackBar.show()

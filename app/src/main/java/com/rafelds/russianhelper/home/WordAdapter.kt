@@ -8,7 +8,6 @@ import com.rafelds.russianhelper.data.RussianWord
 
 class WordAdapter : RecyclerView.Adapter<WordViewHolder>() {
 
-    var longClickListener: (russianWord: RussianWord) -> Boolean = { false }
     var clickListener: (russianWord: RussianWord) -> Unit = {}
 
     var words: ArrayList<RussianWord> = arrayListOf()
@@ -26,7 +25,6 @@ class WordAdapter : RecyclerView.Adapter<WordViewHolder>() {
 
     override fun onBindViewHolder(viewHolder: WordViewHolder, index: Int) {
         viewHolder.setViewDetails(words[index])
-        viewHolder.setLongClickListener(longClickListener)
         viewHolder.setClickListener(clickListener)
     }
 

@@ -13,12 +13,6 @@ class WordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.tag = russianWord
     }
 
-    fun setLongClickListener(longClickListener: (russianWord: RussianWord) -> Boolean) {
-        itemView.setOnLongClickListener {
-            longClickListener.invoke(itemView.tag as RussianWord)
-        }
-    }
-
     fun setClickListener(clickListener: (russianWord: RussianWord) -> Unit) {
         itemView.setOnClickListener {
             clickListener.invoke(itemView.tag as RussianWord)

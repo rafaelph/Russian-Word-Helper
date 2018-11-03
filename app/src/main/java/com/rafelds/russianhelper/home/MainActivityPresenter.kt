@@ -39,12 +39,11 @@ class MainActivityPresenter @Inject constructor(private val russianWordService: 
         view.openDetailsScreen(russianWord)
     }
 
-    fun onItemLongClick(russianWord: RussianWord): Boolean {
+    fun onItemSwipe(russianWord: RussianWord) {
         russianWordService.deleteWord(russianWord.id)
             .observeOn(mainThread())
             .subscribeOn(io())
             .subscribe(getUpdateViewOnDeleteObserver(russianWord.id))
-        return true
     }
 
     private fun getUpdateViewObserver() = object : SingleObserver<ArrayList<RussianWord>> {
@@ -68,7 +67,7 @@ class MainActivityPresenter @Inject constructor(private val russianWordService: 
     private fun getUpdateViewOnSaveObserver() = object : SingleObserver<RussianWord> {
         override fun onSuccess(result: RussianWord) {
             view.insertWord(result)
-            view.showWordDeletedSnackbar()
+            view.showWordAddedSnackbar()
         }
 
         override fun onSubscribe(d: Disposable) = Unit
