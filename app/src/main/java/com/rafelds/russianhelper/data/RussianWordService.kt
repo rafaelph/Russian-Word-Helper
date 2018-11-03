@@ -3,6 +3,7 @@ package com.rafelds.russianhelper.data
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.realm.Realm
+import io.realm.Sort
 import io.realm.kotlin.where
 import java.util.*
 import javax.inject.Inject
@@ -13,39 +14,40 @@ class RussianWordService @Inject constructor() {
         private const val FIELD_ID = "id"
     }
 
-    fun addWord(word: String, description: String): Single<RussianWord> {
-        return Single.create {
+    fun addWord(russianWord: RussianWord): Single<RussianWord> {
+        return Single.create { emitter ->
             val realm = Realm.getDefaultInstance()
             realm.beginTransaction()
-            val id = UUID.randomUUID().toString()
-            val realmObject = realm.createObject(RussianWordDB::class.java, id)
-            realmObject.word = word
-            realmObject.description = description
+            val realmObject = realm.createObject(RussianWordDB::class.java, russianWord.id)
+            realmObject.word = russianWord.russianWord
+            realmObject.description = russianWord.description
+            realmObject.dateAdded = russianWord.dateAdded
             realm.commitTransaction()
             realm.close()
-            it.onSuccess(RussianWord(id, word, description))
+            emitter.onSuccess(RussianWord(russianWord.id, russianWord.russianWord, russianWord.description, russianWord.dateAdded))
         }
     }
 
     fun getAllWords(): Single<ArrayList<RussianWord>> {
         return Single.create { emitter ->
             val realm = Realm.getDefaultInstance()
-            val russianWords = realm.where(RussianWordDB::class.java).findAll().map {
-                RussianWord(it.id!!, it.word!!, it.description!!)
-            }.toCollection(arrayListOf())
+            val russianWords =
+                realm.where(RussianWordDB::class.java).sort("dateAdded", Sort.DESCENDING).findAll().map { russianWord ->
+                    RussianWord(russianWord.id!!, russianWord.word, russianWord.description, russianWord.dateAdded)
+                }.toCollection(arrayListOf())
             realm.close()
             emitter.onSuccess(russianWords)
         }
     }
 
     fun deleteWord(id: String): Completable {
-        return Completable.create {
+        return Completable.create { source ->
             val realm = Realm.getDefaultInstance()
             realm.beginTransaction()
             realm.where<RussianWordDB>().equalTo(FIELD_ID, id).findAll().deleteAllFromRealm()
             realm.commitTransaction()
             realm.close()
-            it.onComplete()
+            source.onComplete()
         }
     }
 

@@ -7,6 +7,7 @@ import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers.io
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -29,7 +30,7 @@ class MainActivityPresenter @Inject constructor(private val russianWordService: 
     fun onFabClick() = view.showAddWordDialog()
 
     fun onSaveClick(word: String, description: String) {
-        russianWordService.addWord(word, description)
+        russianWordService.addWord(RussianWord(UUID.randomUUID().toString(), word, description, Date()))
             .observeOn(mainThread())
             .subscribeOn(io())
             .subscribe(getUpdateViewOnSaveObserver())
@@ -38,7 +39,7 @@ class MainActivityPresenter @Inject constructor(private val russianWordService: 
     fun onItemClick(russianWord: RussianWord) = view.openDetailsScreen(russianWord)
 
     fun onUndoClick(russianWord: RussianWord, index: Int) {
-        russianWordService.addWord(russianWord.russianWord, russianWord.description)
+        russianWordService.addWord(russianWord)
             .observeOn(mainThread())
             .subscribeOn(io())
             .subscribe(getUpdateViewOnUndoObserver(index))
@@ -71,7 +72,7 @@ class MainActivityPresenter @Inject constructor(private val russianWordService: 
 
     private fun getUpdateViewOnSaveObserver() = object : SingleObserver<RussianWord> {
         override fun onSuccess(result: RussianWord) {
-            view.insertWord(result)
+            view.insertWord(result, 0)
             view.showWordAddedSnackbar()
         }
 

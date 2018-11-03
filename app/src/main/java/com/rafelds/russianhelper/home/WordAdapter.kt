@@ -29,8 +29,12 @@ class WordAdapter : RecyclerView.Adapter<WordViewHolder>() {
     }
 
     fun addItem(word: RussianWord) {
-        words.add(word)
-        notifyItemInserted(words.size - 1)
+        addItem(word, 0)
+    }
+
+    fun addItem(word: RussianWord, index: Int) {
+        words.add(index, word)
+        notifyItemInserted(index)
     }
 
     fun deleteItem(id: String) {
@@ -44,9 +48,4 @@ class WordAdapter : RecyclerView.Adapter<WordViewHolder>() {
     fun getIndex(id: String) = words.indexOf(words.first {
         it.id == id
     })
-
-    fun addItem(word: RussianWord, index: Int) {
-        words.add(index, word)
-        notifyItemInserted(index)
-    }
 }

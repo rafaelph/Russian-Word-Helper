@@ -16,7 +16,8 @@ class RussianHelperApplication : Application() {
         Realm.init(this)
         val config = RealmConfiguration.Builder()
             .name("russian_helper.realm")
-            .schemaVersion(1L)
+            .migration(SchemaMigration())
+            .schemaVersion(2L)
             .build()
         Realm.setDefaultConfiguration(config)
 

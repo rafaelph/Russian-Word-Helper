@@ -21,6 +21,7 @@ import com.rafelds.russianhelper.data.RussianWord
 import com.rafelds.russianhelper.details.WordDetailActivity
 import jp.wasabeef.recyclerview.animators.FadeInAnimator
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 import javax.inject.Inject
 
 
@@ -88,8 +89,6 @@ class MainActivity : AppCompatActivity(), MainActivityView {
     }
 
     override fun getWordIndex(id: String): Int = wordAdapter.getIndex(id)
-
-    override fun insertWord(word: RussianWord) = wordAdapter.addItem(word)
 
     override fun insertWord(word: RussianWord, index: Int) = wordAdapter.addItem(word, index)
 
