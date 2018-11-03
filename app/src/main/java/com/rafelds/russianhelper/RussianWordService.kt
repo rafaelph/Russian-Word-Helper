@@ -13,25 +13,26 @@ class RussianWordService @Inject constructor() {
         private const val FIELD_ID = "id"
     }
 
-    fun addWord(word: String, description: String): Completable {
-        return Completable.create {
+    fun addWord(word: String, description: String): Single<RussianWord> {
+        return Single.create {
             val realm = Realm.getDefaultInstance()
             realm.beginTransaction()
-            val realmObject = realm.createObject(RussianWordDB::class.java, UUID.randomUUID().toString())
+            val id = UUID.randomUUID().toString()
+            val realmObject = realm.createObject(RussianWordDB::class.java, id)
             realmObject.word = word
             realmObject.description = description
             realm.commitTransaction()
             realm.close()
-            it.onComplete()
+            it.onSuccess(RussianWord(id, word, description))
         }
     }
 
-    fun getAllWords(): Single<List<RussianWord>> {
+    fun getAllWords(): Single<ArrayList<RussianWord>> {
         return Single.create { emitter ->
             val realm = Realm.getDefaultInstance()
             val russianWords = realm.where(RussianWordDB::class.java).findAll().map {
                 RussianWord(it.id!!, it.word!!, it.description!!)
-            }.toList()
+            }.toCollection(arrayListOf())
             realm.close()
             emitter.onSuccess(russianWords)
         }

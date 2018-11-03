@@ -12,6 +12,8 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.WindowManager
+import android.view.animation.LinearInterpolator
+import jp.wasabeef.recyclerview.animators.FadeInAnimator
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -35,6 +37,10 @@ class MainActivity : AppCompatActivity(), MainActivityView {
 
         activity_main_recycler_view.apply {
             layoutManager = LinearLayoutManager(context)
+            val animator = FadeInAnimator()
+            animator.addDuration = 200L
+            animator.setInterpolator(LinearInterpolator())
+            itemAnimator = animator
             adapter = wordAdapter
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
             addOnScrollListener(hideFabOnScrollUpListener(activity_main_fab))
@@ -65,9 +71,13 @@ class MainActivity : AppCompatActivity(), MainActivityView {
         }.show()
     }
 
-    override fun updateWordList(results: List<RussianWord>) {
+    override fun updateWordList(results: ArrayList<RussianWord>) {
         wordAdapter.words = results
     }
+
+    override fun insertWord(word: RussianWord) = wordAdapter.addItem(word)
+
+    override fun deleteWord(id: String) = wordAdapter.deleteItem(id)
 
     override fun showWordAddedSnackbar() = displaySnackbar(getString(R.string.word_save_successful))
 

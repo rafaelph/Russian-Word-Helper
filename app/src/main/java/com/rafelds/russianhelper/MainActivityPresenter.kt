@@ -1,5 +1,6 @@
 package com.rafelds.russianhelper
 
+import io.reactivex.CompletableObserver
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
 import io.reactivex.disposables.Disposable
@@ -27,7 +28,6 @@ class MainActivityPresenter @Inject constructor(private val russianWordService: 
 
     fun onSaveButtonClick(word: String, description: String) {
         russianWordService.addWord(word, description)
-            .andThen(russianWordService.getAllWords())
             .observeOn(mainThread())
             .subscribeOn(io())
             .subscribe(getUpdateViewOnSaveObserver())
@@ -35,24 +35,23 @@ class MainActivityPresenter @Inject constructor(private val russianWordService: 
 
     fun onItemLongClick(id: String): Boolean {
         russianWordService.deleteWord(id)
-            .andThen(russianWordService.getAllWords())
             .observeOn(mainThread())
             .subscribeOn(io())
-            .subscribe(getUpdateViewOnDeleteObserver())
+            .subscribe(getUpdateViewOnDeleteObserver(id))
         return true
     }
 
-    private fun getUpdateViewObserver() = object : SingleObserver<List<RussianWord>> {
-        override fun onSuccess(results: List<RussianWord>) = view.updateWordList(results)
+    private fun getUpdateViewObserver() = object : SingleObserver<ArrayList<RussianWord>> {
+        override fun onSuccess(results: ArrayList<RussianWord>) = view.updateWordList(results)
         override fun onSubscribe(d: Disposable) = Unit
         override fun onError(e: Throwable) = Unit
 
     }
 
-    private fun getUpdateViewOnSaveObserver() = object : SingleObserver<List<RussianWord>> {
-        override fun onSuccess(results: List<RussianWord>) {
-            view.updateWordList(results)
-            view.showWordAddedSnackbar()
+    private fun getUpdateViewOnDeleteObserver(id: String) = object : CompletableObserver {
+        override fun onComplete() {
+            view.deleteWord(id)
+            view.showWordDeletedSnackbar()
         }
 
         override fun onSubscribe(d: Disposable) = Unit
@@ -60,9 +59,9 @@ class MainActivityPresenter @Inject constructor(private val russianWordService: 
 
     }
 
-    private fun getUpdateViewOnDeleteObserver() = object : SingleObserver<List<RussianWord>> {
-        override fun onSuccess(results: List<RussianWord>) {
-            view.updateWordList(results)
+    private fun getUpdateViewOnSaveObserver() = object : SingleObserver<RussianWord> {
+        override fun onSuccess(result: RussianWord) {
+            view.insertWord(result)
             view.showWordDeletedSnackbar()
         }
 
