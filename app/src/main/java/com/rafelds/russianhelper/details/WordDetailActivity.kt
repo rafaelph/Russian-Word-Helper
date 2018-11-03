@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.rafelds.russianhelper.R
 import com.rafelds.russianhelper.RussianHelperApplication
-import com.rafelds.russianhelper.RussianWord
+import com.rafelds.russianhelper.data.RussianWord
 import kotlinx.android.synthetic.main.activity_word_detail.*
 import javax.inject.Inject
 

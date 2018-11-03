@@ -1,4 +1,6 @@
-package com.rafelds.russianhelper
+package com.rafelds.russianhelper.home
+
+import com.rafelds.russianhelper.data.RussianWord
 
 interface MainActivityView {
     fun showAddWordDialog()

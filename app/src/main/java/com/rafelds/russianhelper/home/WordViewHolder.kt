@@ -1,7 +1,8 @@
-package com.rafelds.russianhelper
+package com.rafelds.russianhelper.home
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.rafelds.russianhelper.data.RussianWord
 import kotlinx.android.synthetic.main.list_item_word.view.*
 
 class WordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

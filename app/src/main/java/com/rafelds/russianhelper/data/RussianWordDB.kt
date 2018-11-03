@@ -1,4 +1,4 @@
-package com.rafelds.russianhelper
+package com.rafelds.russianhelper.data
 
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey

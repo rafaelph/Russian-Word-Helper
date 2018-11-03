@@ -1,4 +1,4 @@
-package com.rafelds.russianhelper
+package com.rafelds.russianhelper.home
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -14,6 +14,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.WindowManager
 import android.view.animation.LinearInterpolator
+import com.rafelds.russianhelper.R
+import com.rafelds.russianhelper.RussianHelperApplication
+import com.rafelds.russianhelper.data.RussianWord
 import com.rafelds.russianhelper.details.WordDetailActivity
 import jp.wasabeef.recyclerview.animators.FadeInAnimator
 import kotlinx.android.synthetic.main.activity_main.*

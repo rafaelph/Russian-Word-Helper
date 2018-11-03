@@ -1,8 +1,10 @@
-package com.rafelds.russianhelper
+package com.rafelds.russianhelper.home
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.rafelds.russianhelper.R
+import com.rafelds.russianhelper.data.RussianWord
 
 class WordAdapter : RecyclerView.Adapter<WordViewHolder>() {
 

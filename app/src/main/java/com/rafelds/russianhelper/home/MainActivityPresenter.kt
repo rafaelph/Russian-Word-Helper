@@ -1,5 +1,7 @@
-package com.rafelds.russianhelper
+package com.rafelds.russianhelper.home
 
+import com.rafelds.russianhelper.data.RussianWord
+import com.rafelds.russianhelper.data.RussianWordService
 import io.reactivex.CompletableObserver
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
