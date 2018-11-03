@@ -26,24 +26,29 @@ class MainActivityPresenter @Inject constructor(private val russianWordService: 
             .subscribe(getUpdateViewObserver())
     }
 
-    fun onAddButtonClick() = view.showAddWordDialog()
+    fun onFabClick() = view.showAddWordDialog()
 
-    fun onSaveButtonClick(word: String, description: String) {
+    fun onSaveClick(word: String, description: String) {
         russianWordService.addWord(word, description)
             .observeOn(mainThread())
             .subscribeOn(io())
             .subscribe(getUpdateViewOnSaveObserver())
     }
 
-    fun onItemClick(russianWord: RussianWord) {
-        view.openDetailsScreen(russianWord)
+    fun onItemClick(russianWord: RussianWord) = view.openDetailsScreen(russianWord)
+
+    fun onUndoClick(russianWord: RussianWord, index: Int) {
+        russianWordService.addWord(russianWord.russianWord, russianWord.description)
+            .observeOn(mainThread())
+            .subscribeOn(io())
+            .subscribe(getUpdateViewOnUndoObserver(index))
     }
 
     fun onItemSwipe(russianWord: RussianWord) {
         russianWordService.deleteWord(russianWord.id)
             .observeOn(mainThread())
             .subscribeOn(io())
-            .subscribe(getUpdateViewOnDeleteObserver(russianWord.id))
+            .subscribe(getUpdateViewOnDeleteObserver(russianWord, view.getWordIndex(russianWord.id)))
     }
 
     private fun getUpdateViewObserver() = object : SingleObserver<ArrayList<RussianWord>> {
@@ -53,10 +58,10 @@ class MainActivityPresenter @Inject constructor(private val russianWordService: 
 
     }
 
-    private fun getUpdateViewOnDeleteObserver(id: String) = object : CompletableObserver {
+    private fun getUpdateViewOnDeleteObserver(russianWord: RussianWord, index: Int) = object : CompletableObserver {
         override fun onComplete() {
-            view.deleteWord(id)
-            view.showWordDeletedSnackbar()
+            view.deleteWord(russianWord.id)
+            view.showWordDeletedSnackbar(russianWord, index)
         }
 
         override fun onSubscribe(d: Disposable) = Unit
@@ -70,6 +75,13 @@ class MainActivityPresenter @Inject constructor(private val russianWordService: 
             view.showWordAddedSnackbar()
         }
 
+        override fun onSubscribe(d: Disposable) = Unit
+        override fun onError(e: Throwable) = Unit
+
+    }
+
+    private fun getUpdateViewOnUndoObserver(index: Int) = object : SingleObserver<RussianWord> {
+        override fun onSuccess(result: RussianWord) = view.insertWord(result, index)
         override fun onSubscribe(d: Disposable) = Unit
         override fun onError(e: Throwable) = Unit
 

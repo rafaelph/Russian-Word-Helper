@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity(), MainActivityView {
         })
         swipeTouchHelper.attachToRecyclerView(activity_main_recycler_view)
 
-        activity_main_fab.setOnClickListener { presenter.onAddButtonClick() }
+        activity_main_fab.setOnClickListener { presenter.onFabClick() }
 
         presenter.attachView(this)
         presenter.onCreate()
@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity(), MainActivityView {
                 val mainWord = inflatedDialogView.findViewById<TextInputEditText>(R.id.dialog_main_word).text.toString()
                 val description =
                     inflatedDialogView.findViewById<TextInputEditText>(R.id.dialog_description).text.toString()
-                presenter.onSaveButtonClick(mainWord, description)
+                presenter.onSaveClick(mainWord, description)
             }
             setButton(BUTTON_NEGATIVE, getString(R.string.cancel)) { _, _ -> }
             setTitle(getString(R.string.add_new_word_title))
@@ -87,13 +87,13 @@ class MainActivity : AppCompatActivity(), MainActivityView {
         wordAdapter.words = results
     }
 
+    override fun getWordIndex(id: String): Int = wordAdapter.getIndex(id)
+
     override fun insertWord(word: RussianWord) = wordAdapter.addItem(word)
 
+    override fun insertWord(word: RussianWord, index: Int) = wordAdapter.addItem(word, index)
+
     override fun deleteWord(id: String) = wordAdapter.deleteItem(id)
-
-    override fun showWordAddedSnackbar() = displaySnackbar(getString(R.string.word_save_successful))
-
-    override fun showWordDeletedSnackbar() = displaySnackbar(getString(R.string.word_delete_successful))
 
     override fun openDetailsScreen(russianWord: RussianWord) {
         val intent = Intent(this, WordDetailActivity::class.java)
@@ -101,12 +101,26 @@ class MainActivity : AppCompatActivity(), MainActivityView {
         startActivity(intent)
     }
 
-    private fun displaySnackbar(text: String) {
+    override fun showWordAddedSnackbar() {
         val snackBar = Snackbar.make(
             findViewById(R.id.activity_main_fab),
-            text,
+            getString(R.string.word_save_successful),
             Snackbar.LENGTH_LONG
         )
+        snackBar.view.setBackgroundColor(ContextCompat.getColor(this, R.color.colorDarkGreen))
+        snackBar.show()
+    }
+
+    override fun showWordDeletedSnackbar(russianWord: RussianWord, index: Int) {
+        val snackBar = Snackbar.make(
+            findViewById(R.id.activity_main_fab),
+            getString(R.string.word_delete_successful),
+            Snackbar.LENGTH_LONG
+        )
+        snackBar.setAction(getString(R.string.undo)) {
+            presenter.onUndoClick(russianWord, index)
+        }
+        snackBar.setActionTextColor(ContextCompat.getColor(this, R.color.colorWhite))
         snackBar.view.setBackgroundColor(ContextCompat.getColor(this, R.color.colorDarkGreen))
         snackBar.show()
     }

@@ -40,4 +40,13 @@ class WordAdapter : RecyclerView.Adapter<WordViewHolder>() {
         notifyItemRemoved(words.indexOf(wordToDelete))
         words.remove(wordToDelete)
     }
+
+    fun getIndex(id: String) = words.indexOf(words.first {
+        it.id == id
+    })
+
+    fun addItem(word: RussianWord, index: Int) {
+        words.add(index, word)
+        notifyItemInserted(index)
+    }
 }
