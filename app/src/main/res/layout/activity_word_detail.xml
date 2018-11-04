@@ -22,25 +22,43 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <TextView
-            android:id="@+id/activity_word_detail_word_title"
+    <android.support.v7.widget.CardView
             app:layout_constraintTop_toBottomOf="@id/activity_word_detail_toolbar_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:textSize="32sp"
-            tools:text="Привет"
-            style="@style/TextAppearance.AppCompat.Headline"/>
+            app:cardCornerRadius="6dp"
+            app:cardElevation="3dp"
+            android:layout_margin="8dp">
 
-    <TextView
-            android:id="@+id/activity_word_detail_description"
-            app:layout_constraintTop_toBottomOf="@id/activity_word_detail_word_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:textSize="16sp"
-            tools:text="Hello, Hi"
-            style="@style/TextAppearance.AppCompat.Caption"/>
+
+        <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <TextView
+                    android:id="@+id/activity_word_detail_word_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:textSize="32sp"
+                    android:textIsSelectable="true"
+                    tools:text="Привет"
+                    style="@style/TextAppearance.AppCompat.Headline"/>
+
+            <TextView
+                    android:id="@+id/activity_word_detail_description"
+                    app:layout_constraintTop_toBottomOf="@id/activity_word_detail_word_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:textSize="16sp"
+                    android:textIsSelectable="true"
+                    tools:text="Hello, Hi"
+                    style="@style/TextAppearance.AppCompat.Caption"/>
+
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
 
     <android.support.design.widget.FloatingActionButton
             android:id="@+id/activity_word_detail_fab"
