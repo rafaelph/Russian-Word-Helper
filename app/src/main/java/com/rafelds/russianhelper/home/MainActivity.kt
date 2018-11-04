@@ -5,10 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
-import android.support.design.widget.TextInputEditText
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog.*
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.AppCompatEditText
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -71,9 +71,9 @@ class MainActivity : AppCompatActivity(), MainActivityView {
         val alertDialog = Builder(this).create()
         alertDialog.apply {
             setButton(BUTTON_POSITIVE, getString(R.string.save)) { _, _ ->
-                val mainWord = inflatedDialogView.findViewById<TextInputEditText>(R.id.dialog_main_word).text.toString()
+                val mainWord = inflatedDialogView.findViewById<AppCompatEditText>(R.id.dialog_main_word).text.toString()
                 val description =
-                    inflatedDialogView.findViewById<TextInputEditText>(R.id.dialog_description).text.toString()
+                    inflatedDialogView.findViewById<AppCompatEditText>(R.id.dialog_description).text.toString()
                 presenter.onSaveClick(mainWord, description)
             }
             setButton(BUTTON_NEGATIVE, getString(R.string.cancel)) { _, _ -> }
