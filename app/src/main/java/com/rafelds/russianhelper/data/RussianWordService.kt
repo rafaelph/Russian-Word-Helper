@@ -51,4 +51,17 @@ class RussianWordService @Inject constructor() {
         }
     }
 
+    fun editWord(id: String, word: String, description: String): Completable {
+        return Completable.create { source ->
+            val realm = Realm.getDefaultInstance()
+            realm.beginTransaction()
+            val russianWordDB = realm.where(RussianWordDB::class.java).equalTo(FIELD_ID, id).findFirst()
+            russianWordDB!!.word = word
+            russianWordDB.description = description
+            realm.commitTransaction()
+            realm.close()
+            source.onComplete()
+        }
+    }
+
 }
