@@ -7,6 +7,11 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.AppCompatEditText
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.WindowManager
 import android.widget.TextView
 import com.rafelds.russianhelper.R
@@ -46,11 +51,32 @@ class WordDetailActivity : AppCompatActivity(), WordDetailActivityView {
         activity_word_detail_word_title.text = initialRussianWord.russianWord
         activity_word_detail_description.text = initialRussianWord.description
 
-        activity_word_detail_edit_button.setOnClickListener {
-            presenter.onEditButtonClick()
+        activity_word_detail_play_button.setOnClickListener {
+            presenter.onPlayButtonClick()
         }
 
         presenter.attachView(this)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.menu_word_detail, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_edit -> {
+                presenter.onEditButtonClick()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        presenter.onStop()
     }
 
     @SuppressLint("InflateParams")
@@ -83,11 +109,29 @@ class WordDetailActivity : AppCompatActivity(), WordDetailActivityView {
 
     override fun showSnackbarEditSuccessful() {
         val snackBar = Snackbar.make(
-            findViewById(R.id.activity_word_detail_edit_button),
+            findViewById(R.id.activity_word_detail_toolbar),
             getString(R.string.word_save_successful),
             Snackbar.LENGTH_LONG
         )
         snackBar.view.setBackgroundColor(ContextCompat.getColor(this, R.color.colorDarkGreen))
         snackBar.show()
+    }
+
+    override fun showSpeakerLoading() {
+        activity_word_detail_play_progress.visibility = VISIBLE
+        activity_word_detail_play_button.visibility = GONE
+    }
+
+    override fun hideSpeakerLoading() {
+        activity_word_detail_play_progress.visibility = GONE
+        activity_word_detail_play_button.visibility = VISIBLE
+    }
+
+    override fun enableSpeakerButton() {
+        activity_word_detail_play_button.isEnabled = true
+    }
+
+    override fun disableSpeakerButton() {
+        activity_word_detail_play_button.isEnabled = false
     }
 }

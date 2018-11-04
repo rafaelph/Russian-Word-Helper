@@ -21,7 +21,7 @@ class RussianHelperApplication : Application() {
             .build()
         Realm.setDefaultConfiguration(config)
 
-        appComponent = DaggerAppComponent.builder().appModule(AppModule()).build()
+        appComponent = DaggerAppComponent.builder().appModule(AppModule(this)).build()
     }
 
     fun getComponent() = appComponent

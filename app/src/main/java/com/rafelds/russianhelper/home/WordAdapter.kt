@@ -13,7 +13,7 @@ class WordAdapter : RecyclerView.Adapter<WordViewHolder>() {
     var words: ArrayList<RussianWord> = arrayListOf()
         set(value) {
             field = value
-            notifyItemRangeInserted(0, value.size)
+            notifyDataSetChanged()
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): WordViewHolder {

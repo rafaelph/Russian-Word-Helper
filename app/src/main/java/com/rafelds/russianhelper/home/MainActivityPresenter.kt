@@ -2,6 +2,7 @@ package com.rafelds.russianhelper.home
 
 import com.rafelds.russianhelper.data.RussianWord
 import com.rafelds.russianhelper.data.RussianWordService
+import com.rafelds.russianhelper.details.speechtotext.VoiceRssServiceWrapper
 import io.reactivex.CompletableObserver
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
@@ -12,7 +13,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class MainActivityPresenter @Inject constructor(private val russianWordService: RussianWordService) {
+class MainActivityPresenter @Inject constructor(
+    private val russianWordService: RussianWordService,
+    private val voiceRssServiceWrapper: VoiceRssServiceWrapper
+) {
 
     private lateinit var view: MainActivityView
 
@@ -20,7 +24,7 @@ class MainActivityPresenter @Inject constructor(private val russianWordService: 
         this.view = view
     }
 
-    fun onCreate() {
+    fun onResume() {
         russianWordService.getAllWords()
             .observeOn(mainThread())
             .subscribeOn(io())
@@ -63,6 +67,7 @@ class MainActivityPresenter @Inject constructor(private val russianWordService: 
         override fun onComplete() {
             view.deleteWord(russianWord.id)
             view.showWordDeletedSnackbar(russianWord, index)
+            voiceRssServiceWrapper.clearCache(russianWord.id)
         }
 
         override fun onSubscribe(d: Disposable) = Unit

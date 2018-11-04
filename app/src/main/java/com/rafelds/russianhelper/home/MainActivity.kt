@@ -62,7 +62,11 @@ class MainActivity : AppCompatActivity(), MainActivityView {
         activity_main_fab.setOnClickListener { presenter.onFabClick() }
 
         presenter.attachView(this)
-        presenter.onCreate()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        presenter.onResume()
     }
 
     @SuppressLint("InflateParams")
