@@ -4,6 +4,7 @@ Save your newly learned Russian words and remember them
 
 Current Features:
 - Add/Edit/Delete words
+- Text to speech
 
 
 ## Authors
