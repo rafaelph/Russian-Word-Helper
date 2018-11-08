@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.rafelds.russianhelper.R
 import com.rafelds.russianhelper.data.RussianWord
+import io.reactivex.android.schedulers.AndroidSchedulers.mainThread
+import io.reactivex.schedulers.Schedulers.io
 
 class WordAdapter : RecyclerView.Adapter<WordViewHolder>() {
 
@@ -12,8 +14,14 @@ class WordAdapter : RecyclerView.Adapter<WordViewHolder>() {
 
     var words: ArrayList<RussianWord> = arrayListOf()
         set(value) {
-            field = value
-            notifyDataSetChanged()
+            WordDiffCallback(field, value)
+                .calculate()
+                .observeOn(mainThread())
+                .subscribeOn(io())
+                .subscribe { result ->
+                    field = value
+                    result.dispatchUpdatesTo(this)
+                }
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, p1: Int): WordViewHolder {
@@ -28,21 +36,19 @@ class WordAdapter : RecyclerView.Adapter<WordViewHolder>() {
         viewHolder.setClickListener(clickListener)
     }
 
-    fun addItem(word: RussianWord) {
-        addItem(word, 0)
-    }
-
     fun addItem(word: RussianWord, index: Int) {
-        words.add(index, word)
-        notifyItemInserted(index)
+        val tempWords = ArrayList(words)
+        tempWords.add(index, word)
+        words = tempWords
     }
 
     fun deleteItem(id: String) {
         val wordToDelete = words.first {
             it.id == id
         }
-        notifyItemRemoved(words.indexOf(wordToDelete))
-        words.remove(wordToDelete)
+        val tempWords = ArrayList(words)
+        tempWords.remove(wordToDelete)
+        words = tempWords
     }
 
     fun getIndex(id: String) = words.indexOf(words.first {
