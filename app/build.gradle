@@ -7,7 +7,7 @@ apply plugin: 'realm-android'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.rafelds.russianhelper"
+        applicationId "com.rafaelds.russianhelper"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools" package="com.rafelds.russianhelper">
+          xmlns:tools="http://schemas.android.com/tools" package="com.rafaelds.russianhelper">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
-            android:name=".RussianHelperApplication"
+            android:name="com.rafaelds.russianhelper.RussianHelperApplication"
             android:allowBackup="true"
             android:fullBackupContent="true"
             android:icon="@mipmap/ic_launcher"
@@ -19,7 +19,7 @@
         <uses-library android:name="org.apache.http.legacy" android:required="false"/>
 
         <activity
-                android:name=".home.MainActivity"
+                android:name="com.rafaelds.russianhelper.home.MainActivity"
                 android:label="@string/app_name"
                 android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -29,15 +29,15 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".details.WordDetailActivity"
+                android:name="com.rafaelds.russianhelper.details.WordDetailActivity"
                 android:label="@string/details"
-                android:parentActivityName=".home.MainActivity"
+                android:parentActivityName="com.rafaelds.russianhelper.home.MainActivity"
                 android:launchMode="singleTask"
                 android:exported="false"
                 android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value="com.rafelds.russianhelper.home.MainActivity"/>
+                    android:value="com.rafaelds.russianhelper.home.MainActivity"/>
         </activity>
     </application>
 
