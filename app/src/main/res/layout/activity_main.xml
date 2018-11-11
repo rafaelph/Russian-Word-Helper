@@ -21,6 +21,12 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <com.miguelcatalan.materialsearchview.MaterialSearchView
+            android:id="@+id/activity_main_search_view"
+            android:translationZ="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
     <android.support.v7.widget.RecyclerView
             android:id="@+id/activity_main_recycler_view"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"

@@ -13,6 +13,7 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
+import android.view.Menu
 import android.view.WindowManager
 import android.view.animation.LinearInterpolator
 import com.rafaelds.russianhelper.R
@@ -62,6 +63,14 @@ class MainActivity : AppCompatActivity(), MainActivityView {
         activity_main_fab.setOnClickListener { presenter.onFabClick() }
 
         presenter.attachView(this)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_activity_main, menu)
+        val item = menu.findItem(R.id.action_search)
+        activity_main_search_view.setMenuItem(item)
+        activity_main_search_view.setOnQueryTextListener(wordAdapter)
+        return true
     }
 
     override fun onResume() {
