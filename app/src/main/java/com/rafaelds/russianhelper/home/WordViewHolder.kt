@@ -1,7 +1,7 @@
 package com.rafaelds.russianhelper.home
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 import com.rafaelds.russianhelper.data.RussianWord
 import kotlinx.android.synthetic.main.list_item_word.view.*
 

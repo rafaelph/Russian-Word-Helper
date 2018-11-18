@@ -1,9 +1,9 @@
 package com.rafaelds.russianhelper.home
 
 import android.annotation.SuppressLint
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.miguelcatalan.materialsearchview.MaterialSearchView
 import com.rafaelds.russianhelper.R
 import com.rafaelds.russianhelper.data.RussianWord

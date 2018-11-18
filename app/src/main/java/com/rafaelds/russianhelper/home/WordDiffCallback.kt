@@ -1,10 +1,11 @@
 package com.rafaelds.russianhelper.home
 
-import android.support.v7.util.DiffUtil
+import androidx.recyclerview.widget.DiffUtil
 import com.rafaelds.russianhelper.data.RussianWord
 import io.reactivex.Single
 
-class WordDiffCallback(private val oldWordList: List<RussianWord>, private val newWordList: List<RussianWord>): DiffUtil.Callback() {
+class WordDiffCallback(private val oldWordList: List<RussianWord>, private val newWordList: List<RussianWord>) :
+    DiffUtil.Callback() {
 
     override fun areItemsTheSame(oldPosition: Int, newPosition: Int): Boolean =
         oldWordList[oldPosition].id == newWordList[newPosition].id
