@@ -4,12 +4,14 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.view.WindowManager
 import android.view.animation.LinearInterpolator
 import androidx.appcompat.app.AlertDialog.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,6 +40,20 @@ class MainActivity : AppCompatActivity(), MainActivityView {
         (application as RussianHelperApplication).getComponent().inject(this)
         setContentView(R.layout.activity_main)
         setSupportActionBar(activity_main_toolbar)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp)
+        }
+
+        activity_main_navigation_view.setNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_cases -> {}
+                R.id.nav_about -> {}
+                else -> {}
+            }
+            activity_main_drawer_layout.closeDrawers()
+            true
+        }
 
         wordAdapter = WordAdapter()
         wordAdapter.clickListener = presenter::onItemClick
@@ -71,6 +87,16 @@ class MainActivity : AppCompatActivity(), MainActivityView {
         activity_main_search_view.setMenuItem(item)
         activity_main_search_view.setOnQueryTextListener(wordAdapter)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                activity_main_drawer_layout.openDrawer(GravityCompat.START)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onResume() {

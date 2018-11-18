@@ -14,4 +14,7 @@
     <string name="details">Details</string>
     <string name="undo">UNDO</string>
     <string name="search">Search</string>
+    <string name="cases">Russian Cases</string>
+    <string name="about">About</string>
+    <string name="app_icon">App Icon</string>
 </resources>
